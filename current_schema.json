@@ -1,0 +1,6 @@
+{
+  "tables": {},
+  "udts": {},
+  "materialized_views": {},
+  "keyspace_name": "twitter"
+}
