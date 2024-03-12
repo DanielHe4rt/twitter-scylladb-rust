@@ -2,7 +2,9 @@ use actix_web::{App, HttpServer, web};
 use actix_web::web::Data;
 
 use crate::config::app::AppState;
+use crate::http::controllers::find_tweet::find_tweet_by_id;
 use crate::http::controllers::get_user_profile::get_user_profile;
+use crate::http::controllers::post_tweet::post_tweet;
 
 mod models;
 
@@ -24,6 +26,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .service(web::scope("/api")
                 .service(get_user_profile)
+                .service(post_tweet)
+                .service(find_tweet_by_id)
             )
             .app_data(Data::new(app_data.clone()))
     }).bind((app_url, app_port))?.run().await

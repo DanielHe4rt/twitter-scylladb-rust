@@ -1,5 +1,86 @@
 {
-  "tables": {},
+  "tables": {
+    "timeline": {
+      "fields": {
+        "liked": "boolean",
+        "bookmarked": "boolean",
+        "text": "text",
+        "username": "text",
+        "tweet_id": "uuid",
+        "author": "text",
+        "retweeted": "boolean",
+        "created_at": "timeuuid"
+      },
+      "type_name": "",
+      "table_name": "",
+      "base_table": "",
+      "partition_keys": [
+        "username"
+      ],
+      "clustering_keys": [
+        "created_at",
+        "tweet_id"
+      ],
+      "global_secondary_indexes": [],
+      "local_secondary_indexes": [],
+      "table_options": null
+    },
+    "user_metrics": {
+      "fields": {
+        "followers_count": "counter",
+        "following_count": "counter",
+        "tweets_count": "counter",
+        "username": "text"
+      },
+      "type_name": "",
+      "table_name": "",
+      "base_table": "",
+      "partition_keys": [
+        "username"
+      ],
+      "clustering_keys": [],
+      "global_secondary_indexes": [],
+      "local_secondary_indexes": [],
+      "table_options": null
+    },
+    "users": {
+      "fields": {
+        "created_at": "timestamp",
+        "biography": "text",
+        "birthdate": "date",
+        "username": "text"
+      },
+      "type_name": "",
+      "table_name": "",
+      "base_table": "",
+      "partition_keys": [
+        "username"
+      ],
+      "clustering_keys": [],
+      "global_secondary_indexes": [],
+      "local_secondary_indexes": [],
+      "table_options": null
+    },
+    "users_followers": {
+      "fields": {
+        "followed_by": "text",
+        "username": "text",
+        "followed_at": "timestamp"
+      },
+      "type_name": "",
+      "table_name": "",
+      "base_table": "",
+      "partition_keys": [
+        "username"
+      ],
+      "clustering_keys": [
+        "followed_by"
+      ],
+      "global_secondary_indexes": [],
+      "local_secondary_indexes": [],
+      "table_options": null
+    }
+  },
   "udts": {},
   "materialized_views": {},
   "keyspace_name": "twitter"
