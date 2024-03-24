@@ -1,36 +1,11 @@
 {
   "tables": {
-    "timeline": {
+    "users": {
       "fields": {
-        "liked": "boolean",
-        "bookmarked": "boolean",
-        "text": "text",
+        "biography": "text",
+        "created_at": "timestamp",
         "username": "text",
-        "tweet_id": "uuid",
-        "author": "text",
-        "retweeted": "boolean",
-        "created_at": "timeuuid"
-      },
-      "type_name": "",
-      "table_name": "",
-      "base_table": "",
-      "partition_keys": [
-        "username"
-      ],
-      "clustering_keys": [
-        "created_at",
-        "tweet_id"
-      ],
-      "global_secondary_indexes": [],
-      "local_secondary_indexes": [],
-      "table_options": null
-    },
-    "user_metrics": {
-      "fields": {
-        "followers_count": "counter",
-        "following_count": "counter",
-        "tweets_count": "counter",
-        "username": "text"
+        "birthdate": "date"
       },
       "type_name": "",
       "table_name": "",
@@ -43,12 +18,33 @@
       "local_secondary_indexes": [],
       "table_options": null
     },
-    "users": {
+    "tweets": {
       "fields": {
-        "created_at": "timestamp",
-        "biography": "text",
-        "birthdate": "date",
-        "username": "text"
+        "time": "timeuuid",
+        "author": "text",
+        "tweet_id": "uuid",
+        "text": "text",
+        "created_at": "timestamp"
+      },
+      "type_name": "",
+      "table_name": "",
+      "base_table": "",
+      "partition_keys": [
+        "tweet_id"
+      ],
+      "clustering_keys": [
+        "time"
+      ],
+      "global_secondary_indexes": [],
+      "local_secondary_indexes": [],
+      "table_options": null
+    },
+    "user_metrics": {
+      "fields": {
+        "tweets_count": "counter",
+        "username": "text",
+        "followers_count": "counter",
+        "following_count": "counter"
       },
       "type_name": "",
       "table_name": "",

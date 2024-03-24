@@ -4,9 +4,11 @@ use charybdis::types::{Boolean, Text, Timeuuid, Uuid};
 #[charybdis_model(
 table_name = timeline,
 partition_keys = [username],
-clustering_keys = [created_at, tweet_id],
-table_options = "CLUSTERING ORDER BY (created_at DESC, tweet_id ASC)"
+clustering_keys = [created_at],
+table_options = "CLUSTERING ORDER BY (created_at DESC)"
 )]
+#[derive(Debug, Default)]
+
 pub struct Timeline {
     pub username: Text,
     pub tweet_id: Uuid,

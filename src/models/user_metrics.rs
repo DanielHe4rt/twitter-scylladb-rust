@@ -8,6 +8,7 @@ clustering_keys = [],
 global_secondary_indexes = [],
 local_secondary_indexes = [],
 )]
+#[derive(Default)]
 pub struct UserMetrics {
     pub username: Text,
     pub followers_count: Counter,

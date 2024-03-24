@@ -5,7 +5,7 @@
       <driver-ref>cassandra</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.dbschema.CassandraJdbcDriver</jdbc-driver>
-      <jdbc-url>jdbc:cassandra://node-0.aws-sa-east-1.2dccdc6950cedb6fe2c4.clusters.scylla.cloud:9042</jdbc-url>
+      <jdbc-url>jdbc:cassandra://node-0.aws-sa-east-1.5dd4505d4dd889a2057e.clusters.scylla.cloud:9042</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

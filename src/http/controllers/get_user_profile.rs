@@ -1,21 +1,21 @@
 use actix_web::{get, HttpResponse, Responder, web};
 use serde_json::json;
-use crate::config::app::AppState;
-use crate::http::HttpError;
 
-use crate::repositories::user_repository::UserRepository;
+use crate::config::app::AppState;
 
 #[get("/users/{username}")]
 async fn get_user_profile(
     data: web::Data<AppState>,
     username: web::Path<String>,
-) -> Result<impl Responder, HttpError> {
-    println!("{:?}", "fodase");
-    let repository = UserRepository::new(data.database.clone());
-    let user = repository.get_user(username.into_inner()).await;
+) -> Result<impl Responder, crate::Error> {
 
-    match user {
-        Ok(user) => Ok(HttpResponse::Ok().json(json!(user))),
-        Err(e) => Err(e)
-    }
+    let username = username.into_inner();
+
+    let user = data.user_repo.get_user(username.clone()).await?;
+    let followers = data.user_repo.get_followers(username.clone()).await?;
+
+    Ok(HttpResponse::Ok().json(json!({
+        "user": user,
+        "followers": followers
+    })))
 }

@@ -1,31 +1,35 @@
-pub mod controllers;
-
 use actix_web::{HttpResponse, ResponseError};
 use charybdis::errors::CharybdisError;
-use serde_json::json;
-use thiserror::Error;
+use serde::Serialize;
 
+use crate::Error;
 
+pub mod controllers;
 
-#[derive(Error, Debug)]
-pub enum HttpError {
-    #[error("Charybdis error: {0}")]
-    CharybdisError(#[from] CharybdisError),
+#[derive(Debug, Serialize)]
+pub struct ErrorResponse {
+    message: std::borrow::Cow<'static, str>,
 }
 
-impl ResponseError for HttpError {
+impl ResponseError for crate::Error {
     fn error_response(&self) -> HttpResponse {
+        // TODO: Logging
         match self {
-            HttpError::CharybdisError(e) => match e {
-                CharybdisError::NotFoundError(e) => HttpResponse::NotFound().json(json!({
-                    "status": 404,
-                    "message": e.to_string()
-                })),
-                _ => HttpResponse::InternalServerError().json(json!({
-                    "status": 500,
-                    "message": e.to_string()
-                }))
-            }
+            Self::CharybdisError(e) => match e {
+                CharybdisError::NotFoundError(_) => HttpResponse::NotFound().json(ErrorResponse{
+                    message: "Record not found".into()
+                }),
+                _ => HttpResponse::InternalServerError().json(ErrorResponse{
+                    message: "Server Error".into()
+                })
+            },
+            Error::QueryError(_) => HttpResponse::InternalServerError().json(ErrorResponse{
+                message: "Server Error".into()
+            }),
+
+            Error::NotFound => HttpResponse::NotFound().json(ErrorResponse{
+                message: "Record not found".into()
+            }),
         }
     }
 }

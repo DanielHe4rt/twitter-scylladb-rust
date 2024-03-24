@@ -4,7 +4,6 @@ use serde::Deserialize;
 use serde_json::json;
 
 use crate::config::app::AppState;
-use crate::http::HttpError;
 use crate::repositories::tweet_repository::TweetRepository;
 
 #[derive(Deserialize)]
@@ -17,8 +16,7 @@ pub struct TweetRequestDTO {
 async fn post_tweet(
     data: web::Data<AppState>,
     payload: web::Json<TweetRequestDTO>,
-) -> Result<impl Responder, HttpError> {
-    println!("{:?}", "fodase");
+) -> Result<impl Responder, crate::Error> {
     let repository = TweetRepository::new(data.database.clone());
     let user = repository.tweet(payload.into_inner()).await;
 
