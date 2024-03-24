@@ -12,7 +12,7 @@ use crate::services::metrics::{get_scylladb_user_metrics_service, ScyllaDBUserMe
 pub struct AppState {
     pub config: Config,
     pub database: Arc<CachingSession>,
-    pub user_repo: Arc<UserRepository<ScyllaDBUserMetrics>>,
+    pub user_repo: Arc<UserRepository>,
     pub metrics: Arc<ScyllaDBUserMetrics>,
 }
 
@@ -37,7 +37,7 @@ impl AppState {
             config: Config::new(),
             database: Arc::clone(&session),
             metrics: Arc::clone(&metrics),
-            user_repo: Arc::new(UserRepository::new(Arc::clone(&session), Arc::clone(&metrics))),
+            user_repo: Arc::new(UserRepository::new(Arc::clone(&session))),
         }
     }
 }

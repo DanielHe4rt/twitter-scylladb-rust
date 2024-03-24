@@ -19,12 +19,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>>{
     let app_port = app_data.config.app.port.parse::<u16>()?;
 
     app_data.user_repo.create(UserDTO {
-        username: "danioel-reis".into(),
+        username: "daniel-reis".into(),
         biography: "hate rust".into(),
-        birthdate: chrono::NaiveDate::from_ymd(1999, 03, 08),
+        birthdate: chrono::NaiveDate::from_ymd_opt(1999, 03, 08).unwrap()
     }).await?;
 
-    app_data.metrics.increment(metrics::MetricsType::Followers,<&str as Into<String>>::into("danioel-reis")).await?;
+    let result = app_data.metrics.get_by_username("daniel-reis").await?;
+    println!("{:?}", result);
 
     Ok(())    // println!("Web Server Online!");
     // println!("Listening on http://{}:{}", app_url, app_port);

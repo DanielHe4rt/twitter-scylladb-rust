@@ -8,16 +8,14 @@ use scylla::{CachingSession, IntoTypedRows};
 use crate::dtos::user_dto::UserDTO;
 use crate::models::user::User;
 use crate::models::user_followers::UserFollow;
-use crate::services::metrics::UserMetricsService;
 
-pub struct UserRepository<T> {
+pub struct UserRepository {
     db: Arc<CachingSession>,
 }
 
-impl<T> UserRepository<T>
-where T: UserMetricsService
+impl UserRepository
 {
-    pub fn new(db: Arc<CachingSession>, metrics: Arc<T>) -> Self {
+    pub fn new(db: Arc<CachingSession>) -> Self {
         Self { db }
     }
 

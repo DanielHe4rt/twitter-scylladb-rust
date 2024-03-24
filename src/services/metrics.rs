@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use std::sync::atomic::AtomicUsize;
 
-use charybdis::operations::Update;
+use charybdis::operations::Find;
 use scylla::CachingSession;
 
 use crate::Error;
@@ -16,6 +16,8 @@ pub enum MetricsType {
 pub trait UserMetricsService {
     async fn increment(&self, metric_type: MetricsType, username: impl Into<String>) -> Result<(), Error>;
     async fn decrement(&self, metric_type: MetricsType, username: impl Into<String>) -> Result<(), Error>;
+
+    async fn get_by_username(&self, username: impl Into<String>) -> Result<UserMetrics, Error>;
 }
 
 struct Metrics {
@@ -59,8 +61,6 @@ impl UserMetricsService for ScyllaDBUserMetrics {
 
     async fn decrement(&self, metrics_type: MetricsType, username: impl Into<String>) -> Result<(), Error> {
         let model = UserMetrics { username: username.into(), ..Default::default() };
-
-
         match metrics_type {
             MetricsType::Tweets => model.decrement_tweets_count(1).execute(&self.db).await?,
             MetricsType::Followers => model.decrement_followers_count(1).execute(&self.db).await?,
@@ -68,5 +68,16 @@ impl UserMetricsService for ScyllaDBUserMetrics {
         };
 
         Ok(())
+    }
+
+    async fn get_by_username(&self, username: impl Into<String>) -> Result<UserMetrics, Error> {
+        let model = UserMetrics { username: username.into(), ..Default::default() };
+        let metrics = model
+            .find_by_primary_key()
+            .execute(&self.db)
+            .await
+            .unwrap_or_else(|_| model);
+
+        Ok(metrics)
     }
 }
